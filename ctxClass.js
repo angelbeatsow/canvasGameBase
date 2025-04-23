@@ -32,4 +32,5 @@ class Text{
       _ctx.fillText(this.text,this.x,this.y,this.maxWidth);
     }
   }
+  touchevent(){}
 };
