@@ -55,6 +55,15 @@ class Game {
   constructor(_scene){
     this.scene = _scene ;
     this.objects = [];
+    this.fade = {flag : 0,frame : 0,nextScene :null};
+    this.fadeFrame = 60;
+    this.dontTouch = false;//タッチイベントを発生させないかどうか
+  }
+
+  canTouchevent(){
+    if(this.dontTouch)return false;
+    if(this.fade.flag != 0)return false;
+    return true;
   }
   
   update(){
@@ -70,9 +79,40 @@ class Game {
       this.objects[i].update();
     }
     this.scene.update();
+
+    if(this.fade.flag != 0){
+      //フェードアウト、フェードインの処理
+      if(this.fade.flag == 1){
+        this.fade.frame++;
+        let _opa = this.fade.frame / (this.fadeFrame /2);//画面を覆う黒の透明度
+        if(_opa > 1){
+          //折り返し
+          _opa = 1;
+          this.fade.flag = 2;
+          if(this.fade.nextScene != null){
+            this.scene = this.fade.nextScene;
+            this.fade.nextScene = null;
+          }  
+        }
+        let _b = new Rect(0,0,canvas.width,canvas.height,"black",_opa);
+        _b.update();
+      }else if(this.fade.flag == 2){
+        this.fade.frame--;
+        let _opa = (this.fade.frame) / (this.fadeFrame /2);//画面を覆う黒の透明度
+        if(_opa < 0){
+          _opa = 0;
+          this.fade.flag = 0;
+          this.fade.frame = 0;
+        }
+        let _b = new Rect(0, 0, canvas.width, canvas.height, "black", _opa);
+        _b.update();
+      }
+    }
   }
   
-  
+  fadeFunction(_nextScene = null){
+    this.fade = {flag :1,frame:0,nextScene:_nextScene};
+  }
 };
 
 class Scene{
@@ -84,7 +124,9 @@ class Scene{
   update(){
     this.objects = [];
     this.setObjects();
-    this.touchevent();
+    if(game.canTouchevent()){
+      this.touchevent();
+    }
 
     for (var i = 0; i < this.basicObjects.length; i++) {
       this.basicObjects[i].update();
@@ -152,7 +194,9 @@ class TitleScene extends Scene{
   }
 };
 
-let game = new Game(new TitleScene());
+let game = new Game();
+game.scene = new TitleScene();
+
 
 function mainLoop (){
   ctx.clearRect(0,0,canvas.width,canvas.height);
