@@ -82,11 +82,14 @@ class Scene{
 
   update(){
     this.objects = [];
+    this.setObjects();
     
     for (var i = 0; i < this.objects.length; i++) {
       this.objects[i].update();
     }
   }
+
+  setObjects(){}  //オーバーライドする
 
   addText(_text, _x = 0, _y = 0, _maxWidth = null,_textSize = 20, _position = null) {
     let _t = new Text(_text, _x, _y, _maxWidth);
