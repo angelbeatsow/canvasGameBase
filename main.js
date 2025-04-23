@@ -52,8 +52,8 @@ function setEventListenner(){
 setEventListenner();
 
 class Game {
-  constructor(){
-    this.scene ;
+  constructor(_scene){
+    this.scene = _scene ;
     this.objects = [];
   }
   
@@ -69,16 +69,36 @@ class Game {
     for (var i = 0; i < this.objects.length; i++) {
       this.objects[i].update();
     }
+    this.scene.update();
   }
   
-  addText(_text,_x = 0,_y = 0){
-    this.objects.push(new Text(_text,_x,_y));
-  }
+  
 };
 
 class Scene{
   constructor(){
     this.objects = [];
+  }
+
+  update(){
+    this.objects = [];
+    
+    for (var i = 0; i < this.objects.length; i++) {
+      this.objects[i].update();
+    }
+  }
+
+  addText(_text, _x = 0, _y = 0, _maxWidth = null,_textSize = 20, _position = null) {
+    let _t = new Text(_text, _x, _y, _maxWidth);
+    _t.font = _textSize + "px sans serif"
+    
+    if (_position == "centerX") {
+      _t.textAlign = "center";
+      _t.x = canvas.width / 2;
+      this.objects.push(_t);
+    } else {
+      this.objects.push(new Text(_text, _x, _y, _maxWidth));
+    }
   }
 };
 
@@ -88,7 +108,7 @@ class TitleScene extends Scene{
   }
 };
 
-let game = new Game();
+let game = new Game(new TitleScene());
 
 function mainLoop (){
   ctx.clearRect(0,0,canvas.width,canvas.height);
