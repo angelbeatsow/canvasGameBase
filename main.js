@@ -173,10 +173,15 @@ class Scene{
     if (_position == "centerX" || _x == "center") {
       _t.textAlign = "center";
       _t.x = canvas.width / 2;
-      targetArr.push(_t);
+    }else if(_position == "textAlignCenter"){
+      _t.textAlign = "center";
+    }else if(_position == "baseCenter"){
+      _t.textAlign = "center";
+      _t.textBaseline = "middle";
     } else {
-      targetArr.push(_t);
+      //なにもしない
     }
+    targetArr.push(_t);
   }
   
   addSprite(_img,_x,_y,_w=0,_h=0,_position = null,_touchevent = null,_isBasicObjects = false){
