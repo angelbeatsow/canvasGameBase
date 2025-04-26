@@ -17,6 +17,7 @@ class Text{
     _ctx.textBaseline = this.textBaseline;
     _ctx.font = this.font;
     let _measure = _cts.measureText(this.text);
+    if(this.maxWidth != null)return{width:this.maxWidth,height:_measure.height};
     return {width:_measure.width ,height:_measure.height};
 
   }
@@ -26,7 +27,7 @@ class Text{
     _ctx.textBaseline = this.textBaseline;
     _ctx.font = this.font;
     _ctx.fillStyle = this.color;
-    if(this.maxWith == null){
+    if(this.maxWidth == null){
       _ctx.fillText(this.text,this.x,this.y);
     }else{
       _ctx.fillText(this.text,this.x,this.y,this.maxWidth);
