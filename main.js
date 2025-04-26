@@ -7,6 +7,8 @@ canvas.width = 400;
 canvas.height = 600;
 
 let touch = {x:0,y:0,"type":null};
+let lastTouchstart = {x:0,y:0};
+let isClick = false;//touchend時にtrueになる場合の処理。touchstart時とgame.update()の最後にfalseになる。
 
 //タッチ座標を取得するeventListennerを設定
 function setEventListenner(){
@@ -34,6 +36,8 @@ function setEventListenner(){
     touch.type = eventType;
     touch.x = Math.floor(x);
     touch.y = Math.floor(y);
+    lastTouchstart ={x:touch.x,y:touch.y};
+    isClick = false;
   });
     
   canvas.addEventListener('touchend',(event)=>{
@@ -47,6 +51,8 @@ function setEventListenner(){
     touch.type = eventType;
     touch.x = Math.floor(x);
     touch.y = Math.floor(y);
+    //isClickの判定
+    if(Math.abs(touch.x - lastTouchstart.x) < 5 && Math.abs(touch.y - lastTouchstart.y) < 5)isClick = true;
   });
 }
 setEventListenner();
@@ -108,6 +114,7 @@ class Game {
         _b.update();
       }
     }
+    if(isClick)isClick = false;
   }
   
   fadeFunction(_nextScene = null){
@@ -140,20 +147,25 @@ class Scene{
 
   touchevent(){
     for (var i = 0; i < this.basicObjects.length; i++) {
-      if(this.basicObjects[i].isTouch())this.basicObjects[i].touchevent();
+      if(this.basicObjects[i].isTouch() && touch.type=="touchstart")this.basicObjects[i].touchevent();
+      if (this.basicObjects[i].isTouch() && isClick) this.basicObjects[i].clickevent();
     }
+      
+
     for (var i = 0; i < this.objects.length; i++) {
-      if(this.objects[i].isTouch())this.objects[i].touchevent();
+      if(this.objects[i].isTouch() && touch.type == "touchstart")this.objects[i].touchevent();
+      if(this.objects[i].isTouch() && isClick)this.objects[i].clickevent();
     }
   }
 
-  addRect(_x,_y,_w,_h,_color = "white",_position = null,_touchevent = null,_isBasicObjects = false){
+  addRect(_x,_y,_w,_h,_color = "white",_position = null,_event = null,_isBasicObjects = false){
     let targetArr;
     if (_isBasicObjects == true) targetArr = this.basicObjects;
     if (_isBasicObjects == false) targetArr = this.objects;
     let _r = new Rect(_x,_y,_w,_h,_color);
-    if (_touchevent != null){
-      _r.touchevent = _touchevent;
+    if (_event != null){
+      _r.touchevent = _event.touchevent;
+      _r.clickevent = _event.clickevent;
     }
     if(_position == "centerX" || _x == "center"){
       _r.x = (canvas.width - _w )/2;
@@ -161,14 +173,15 @@ class Scene{
     targetArr.push(_r);
   }
   
-  addText(_text, _x = 0, _y = 0, _maxWidth = null,_textSize = 20, _position = null,_color = "white",_touchevent = null,_isBasicObjects = false) {
+  addText(_text, _x = 0, _y = 0, _maxWidth = null,_textSize = 20, _position = null,_color = "white",_event = null,_isBasicObjects = false) {
     let targetArr;
     if(_isBasicObjects == true)targetArr = this.basicObjects;
     if(_isBasicObjects == false)targetArr = this.objects;
     let _t = new Text(_text, _x, _y, _maxWidth,_color);
     if(_textSize != null)_t.font = _textSize + "px sans serif"
-    if(_touchevent != null){
-      _t.touchevent = _touchevent;
+    if (_event != null) {
+      _t.touchevent = _event.touchevent;
+      _t.clickevent = _event.clickevent;
     }
     if (_position == "centerX" || _x == "center") {
       _t.textAlign = "center";
@@ -179,17 +192,20 @@ class Scene{
       _t.textAlign = "center";
       _t.textBaseline = "middle";
     } else {
-      //なにもしない
+      //do nothing
     }
     targetArr.push(_t);
   }
   
-  addSprite(_img,_x,_y,_w=0,_h=0,_position = null,_touchevent = null,_isBasicObjects = false){
+  addSprite(_img,_x,_y,_w=0,_h=0,_position = null,_event = null,_isBasicObjects = false){
     let targetArr;
     if (_isBasicObjects == true) targetArr = this.basicObjects;
     if (_isBasicObjects == false) targetArr = this.objects;
     let _sp = new Sprite(_img,_x,_y,_w,_h);
-    if(_touchevent != null)_sp.touchevent = _touchevent;
+    if (_event != null) {
+      _sp.touchevent = _event.touchevent;
+      _sp.clickevent = _event.clickevent;
+    }
     if(_position == "centerX" || _x == "center"){
       if(_w == 0){
         _sp.x = (canvas.width - _img.width)/2;
@@ -200,12 +216,15 @@ class Scene{
     targetArr.push(_sp);
   }
   
-  addCercle(_x,_y,_hankei,_color = "black",_isStroke = false,_touchevent = null,_isBasicObjects = false){
+  addCercle(_x,_y,_hankei,_color = "black",_isStroke = false,_event = null,_isBasicObjects = false){
     let targetArr;
     if (_isBasicObjects == true) targetArr = this.basicObjects;
     if (_isBasicObjects == false) targetArr = this.objects;
     let _sp = new Cercle(_x, _y, _hankei,_color,_isStroke);
-    if (_touchevent != null) _sp.touchevent = _touchevent;
+    if (_event != null) {
+      _sp.touchevent = _event.touchevent;
+      _sp.clickevent = _event.clickevent;
+    }
     if ( _x == "center") {
       _sp.x = canvas.width /2;
     }
