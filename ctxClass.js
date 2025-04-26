@@ -34,6 +34,7 @@ class Text{
     }
   }
   touchevent(){}
+  clickevent(){}
   isTouch(){
     if(touch.type == "touchstart" && touch.x > this.x  && touch.x < this.x + this.returnWH.width && touch.y > this.y && touch.y < this.y + this.returnWH.height){
       return true;
@@ -59,6 +60,7 @@ class Rect{
     _ctx.globalAlpha = 1;
   }
   touchevent(){}
+  clickevent(){}
   isTouch(){
     if (touch.type == "touchstart" && touch.x > this.x && touch.x < this.x + this.w && touch.y > this.y && touch.y < this.y + this.h) {
   return true;
@@ -86,6 +88,7 @@ class Sprite{
     }
   }
   touchevent(){}
+  clickevent(){}
   isTouch(){
     if(touch.type == "touchstart" && touch.x > this.x && touch.x < this.x + this.w && touch.y > this.y && touch.y < this.y + this.h){
       return true;
@@ -113,7 +116,8 @@ class Cercle{
     if(this.isStroke == true)_ctx.stroke();
     _ctx.closePath();
   }
-  touchevent() {}
+  touchevent(){}
+  clickevent(){}
   isTouch() {
     if (touch.type == "touchstart" && Math.sqrt( (touch.x - this.x)**2 + (touch.y - this.y)**2 ) < this.radius ) {
       return true;
