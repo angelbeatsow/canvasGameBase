@@ -140,10 +140,10 @@ class Scene{
 
   touchevent(){
     for (var i = 0; i < this.basicObjects.length; i++) {
-      this.basicObjects[i].touchevent();
+      if(this.basicObjects[i].isTouch())this.basicObjects[i].touchevent();
     }
     for (var i = 0; i < this.objects.length; i++) {
-      this.objects[i].touchevent();
+      if(this.objects[i].isTouch())this.objects[i].touchevent();
     }
   }
 
@@ -153,11 +153,7 @@ class Scene{
     if (_isBasicObjects == false) targetArr = this.objects;
     let _r = new Rect(_x,_y,_w,_h,_color);
     if (_touchevent != null){
-      _r.touchevent = () => {
-        if (_r.isTouch) {
-          _touchevent();
-        }
-      };
+      _r.touchevent = _touchevent;
     }
     if(_position == "centerX" || _x == "center"){
       _r.x = (canvas.width - _w )/2;
@@ -165,18 +161,14 @@ class Scene{
     targetArr.push(_r);
   }
   
-  addText(_text, _x = 0, _y = 0, _maxWidth = null,_textSize = 20, _position = null,_touchevent = null,_isBasicObjects = false) {
+  addText(_text, _x = 0, _y = 0, _maxWidth = null,_textSize = 20, _position = null,_color = "white",_touchevent = null,_isBasicObjects = false) {
     let targetArr;
     if(_isBasicObjects == true)targetArr = this.basicObjects;
     if(_isBasicObjects == false)targetArr = this.objects;
-    let _t = new Text(_text, _x, _y, _maxWidth);
+    let _t = new Text(_text, _x, _y, _maxWidth,_color);
     if(_textSize != null)_t.font = _textSize + "px sans serif"
     if(_touchevent != null){
-      _t.touchevent = ()=>{
-        if(_t.isTouch){
-          _touchevent();
-        }
-      };
+      _t.touchevent = _touchevent;
     }
     if (_position == "centerX" || _x == "center") {
       _t.textAlign = "center";
@@ -185,6 +177,34 @@ class Scene{
     } else {
       targetArr.push(_t);
     }
+  }
+  
+  addSprite(_img,_x,_y,_w=0,_h=0,_position = null,_touchevent = null,_isBasicObjects = false){
+    let targetArr;
+    if (_isBasicObjects == true) targetArr = this.basicObjects;
+    if (_isBasicObjects == false) targetArr = this.objects;
+    let _sp = new Sprite(_img,_x,_y,_w,_h);
+    if(_touchevent != null)_sp.touchevent = _touchevent;
+    if(_position == "centerX" || _x == "center"){
+      if(_w == 0){
+        _sp.x = (canvas.width - _img.width)/2;
+      }else{
+        _sp.x = (canvas.width - _w)/2;
+      }
+    }
+    targetArr.push(_sp);
+  }
+  
+  addCercle(_x,_y,_hankei,_color = "black",_isStroke = false,_touchevent = null,_isBasicObjects = false){
+    let targetArr;
+    if (_isBasicObjects == true) targetArr = this.basicObjects;
+    if (_isBasicObjects == false) targetArr = this.objects;
+    let _sp = new Cercle(_x, _y, _hankei,_color,_isStroke);
+    if (_touchevent != null) _sp.touchevent = _touchevent;
+    if ( _x == "center") {
+      _sp.x = canvas.width /2;
+    }
+    targetArr.push(_sp);
   }
 };
 
