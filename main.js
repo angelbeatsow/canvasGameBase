@@ -57,6 +57,24 @@ function setEventListenner(){
 }
 setEventListenner();
 
+//スクロールの制御
+let canScroll = true;
+window.addEventListener(
+    "touchmove",
+    function (event) {
+      if(canScroll == false)event.preventDefault();
+    },
+    { passive: false }
+);
+document.getElementById("scrollButton").addEventListener("click",()=>{
+  canScroll = !canScroll;
+  if (canScroll) {
+    document.getElementById("scrollButton").textContent = "スクロール禁止をONにする";
+  } else {
+    document.getElementById("scrollButton").textContent = "スクロール禁止をOFFにする";
+  }
+});
+
 class Game {
   constructor(_scene){
     this.scene = _scene ;
