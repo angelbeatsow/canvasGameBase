@@ -97,6 +97,67 @@ class Sprite{
   }
 }
 
+/*
+複数画像でアニメーションさせる場合
+class Anime {
+  constructor(_imgs = [], _x, _y, _w = 0, _h = 0,_frameInterval = 10) {
+    this.imgs = [].concat(_imgs);
+    this.x = _x;
+    this.y = _y;
+    this.w = _w;
+    this.h = _h;
+    if (_w == 0) this.w = _imgs[0].width;
+    if (_h == 0) this.h = _imgs[0].height;
+    this.frameInterval = _frameInterval;
+  }
+  update(frame) {
+    let _ctx = document.getElementById("canvas").getContext("2d");
+    let _image = this.imgs[Math.floor( frame / this.frameInterval ) % this.imgs.length];
+    if (this.w == 0 || this.h == 0) {
+      _ctx.drawImage(_image, this.x, this.y);
+    } else {
+      _ctx.drawImage(_image, this.x, this.y, this.w, this.h);
+    }
+  }
+  touchevent() {}
+  clickevent() {}
+  isTouch() {
+    if (touch.x > this.x && touch.x < this.x + this.w && touch.y > this.y && touch.y < this.y + this.h) {
+      return true;
+    }
+    return false;
+  }
+}
+*/
+
+//一枚の画像でアニメーションさせる場合
+class Anime {
+  constructor(_img, _x, _y, _w = 0, _h = 0,_widthAtOneFrame = 64, _frameInterval = 10) {
+    this.img = _img;
+    this.x = _x;
+    this.y = _y;
+    this.w = _w;
+    this.h = _h;
+    if (_w == 0) this.w = _img.width;
+    if (_h == 0) this.h = _img.height;
+    this.widthAtOneFrame = _widthAtOneFrame;
+    this.frameInterval = _frameInterval;
+  }
+  update(frame) {
+    let _ctx = document.getElementById("canvas").getContext("2d");
+    let _x1 = Math.floor(frame / this.frameInterval) % Math.floor(this.img.width / this.widthAtOneFrame) * (this.widthAtOneFrame +1);
+    _ctx.drawImage(this.img,_x1,0,this.widthAtOneFrame,this.img.height,this.x, this.y, this.w, this.h);
+  }
+  touchevent() {}
+  clickevent() {}
+  isTouch() {
+    if (touch.x > this.x && touch.x < this.x + this.w && touch.y > this.y && touch.y < this.y + this.h) {
+      return true;
+    }
+    return false;
+  }
+}
+
 class Cercle{
   constructor(_x, _y, _hankei,_color = "black",_isStroke = false,_lineWidth = 3) {
     this.x = _x;
