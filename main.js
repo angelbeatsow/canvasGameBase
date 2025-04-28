@@ -128,7 +128,7 @@ class Scene{
     this.objects = [];
   }
 
-  update(){
+  update(frame = 0){//引数のframeはAnimeオブジェクトを使用する場合に必要
     this.objects = [];
     this.setObjects();
     if(game.canTouchevent()){
@@ -136,10 +136,10 @@ class Scene{
     }
 
     for (var i = 0; i < this.basicObjects.length; i++) {
-      this.basicObjects[i].update();
+      this.basicObjects[i].update(frame);
     }
     for (var i = 0; i < this.objects.length; i++) {
-      this.objects[i].update();
+      this.objects[i].update(frame);
     }
   }
 
@@ -215,6 +215,48 @@ class Scene{
     }
     targetArr.push(_sp);
   }
+
+  /*
+  //複数画像でアニメーションさせる場合
+  addAnime(_imgs = [], _x, _y, _w = 0, _h = 0,_frameInterval = 10, _position = null, _event = null, _isBasicObjects = false) {
+  let targetArr;
+  if (_isBasicObjects == true) targetArr = this.basicObjects;
+  if (_isBasicObjects == false) targetArr = this.objects;
+  let _anime = new Anime(_imgs, _x, _y, _w, _h,_frameInterval);
+  if (_event != null) {
+    _anime.touchevent = _event.touchevent;
+    _anime.clickevent = _event.clickevent;
+  }
+  if (_position == "centerX" || _x == "center") {
+    if (_w == 0) {
+      _anime.x = (canvas.width - _imgs[0].width) / 2;
+    } else {
+      _anime.x = (canvas.width - _w) / 2;
+    }
+  }
+  targetArr.push(_anime);
+}
+  */
+
+  //ひとつの画像でアニメーションさせる場合
+  addAnime(_img, _x, _y, _w = 0, _h = 0,_widthAtOneFrame = 64,_frameInterval = 10, _position = null, _event = null, _isBasicObjects = false) {
+  let targetArr;
+  if (_isBasicObjects == true) targetArr = this.basicObjects;
+  if (_isBasicObjects == false) targetArr = this.objects;
+  let _anime = new Anime(_img, _x, _y, _w, _h,_widthAtOneFrame,_frameInterval);
+  if (_event != null) {
+    _anime.touchevent = _event.touchevent;
+    _anime.clickevent = _event.clickevent;
+  }
+  if (_position == "centerX" || _x == "center") {
+    if (_w == 0) {
+      _anime.x = (canvas.width - _imgs[0].width) / 2;
+    } else {
+      _anime.x = (canvas.width - _w) / 2;
+    }
+  }
+  targetArr.push(_anime);
+}
   
   addCercle(_x,_y,_hankei,_color = "black",_isStroke = false,_event = null,_isBasicObjects = false){
     let targetArr;
