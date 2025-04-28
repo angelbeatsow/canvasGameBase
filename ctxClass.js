@@ -131,6 +131,7 @@ class Anime {
 */
 
 //一枚の画像でアニメーションさせる場合
+//複数の透過pngをひとつの画像に繋げるサイト→https://angelbeatsow.github.io/pngYokonarabeKetsugou/
 class Anime {
   constructor(_img, _x, _y, _w = 0, _h = 0,_widthAtOneFrame = 64, _frameInterval = 10) {
     this.img = _img;
@@ -145,7 +146,7 @@ class Anime {
   }
   update(frame) {
     let _ctx = document.getElementById("canvas").getContext("2d");
-    let _x1 = Math.floor(frame / this.frameInterval) % Math.floor(this.img.width / this.widthAtOneFrame) * (this.widthAtOneFrame +1);
+    let _x1 = Math.floor(frame / this.frameInterval) % Math.floor(this.img.width / this.widthAtOneFrame) * this.widthAtOneFrame;
     _ctx.drawImage(this.img,_x1,0,this.widthAtOneFrame,this.img.height,this.x, this.y, this.w, this.h);
   }
   touchevent() {}
