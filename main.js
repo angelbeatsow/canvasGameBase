@@ -8,7 +8,7 @@ canvas.height = 600;
 
 let touch = {x:0,y:0,"type":null};
 let lastTouchstart = {x:0,y:0};
-let isClick = false;//touchend時にtrueになる場合の処理。touchstart時とgame.update()の最後にfalseになる。
+let isClick = false;//trueになる場合の処理はcanvas.addEventListennerのtouchend時参照。touchstart時とgame.update()の最後にfalseになる。
 
 //タッチ座標を取得するeventListennerを設定
 function setEventListenner(){
