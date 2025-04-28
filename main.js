@@ -293,4 +293,6 @@ function mainLoop (){
   
   requestAnimationFrame(mainLoop);
 };
-mainLoop();
+window.onload = ()=>{
+  mainLoop();
+};
