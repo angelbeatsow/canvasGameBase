@@ -5,7 +5,7 @@ SceneインスタンスのScene.objectsに、画面に表示するオブジェ�
 
 Scene.basicObjectはrequestAnimationFrameでフレームごとに初期化されないため、constructor内で設定するように。setObject内で設定するとbasicObjectが時間に比例して増えてしまう。
 
-addRect等の引数にある_eventは、nullまたは{touchevent:()=>{},clickevent:()=>{}}をいれる。この２つのイベントは、そのオブジェクトの範囲がtouchされている場合に働く。toucheventについてはtouchstartで働くので、連続して発生しないように、イベントの末尾でgame.dontTouchに数値を代入したりtouch.type="touchend"を設定することを推奨する。clickeventはtouchstartした座標の近くでtouchendすると働く。
+addRect等の引数にある_eventは、nullまたは{touchevent:()=>{},clickevent:()=>{}}をいれる。片方だけでも、空のオブジェクト{}でもよい。この２つのイベントは、そのオブジェクトの範囲がtouchされている場合に働く。toucheventについてはtouchstartで働くので、連続して発生しないように、イベントの末尾でgame.dontTouchに数値を代入したりtouch.type="touchend"を設定することを推奨する。clickeventはtouchstartした座標の近くでtouchendすると働く。
 
 game.dontTouchは0より大きいとtoucheventやclickeventが発生しなくなる。game.update内で1フレームごとに1ずつ減る。
 
