@@ -182,8 +182,8 @@ class Scene{
     if (_isBasicObjects == false) targetArr = this.objects;
     let _r = new Rect(_x,_y,_w,_h,_color);
     if (_event != null){
-      _r.touchevent = _event.touchevent;
-      _r.clickevent = _event.clickevent;
+      if("touchevent" in _event)_r.touchevent = _event.touchevent;
+      if("clickevent" in _event)_r.clickevent = _event.clickevent;
     }
     if(_position == "centerX" || _x == "center"){
       _r.x = (canvas.width - _w )/2;
@@ -198,8 +198,8 @@ class Scene{
     let _t = new Text(_text, _x, _y, _maxWidth,_color);
     if(_textSize != null)_t.font = _textSize + "px sans serif"
     if (_event != null) {
-      _t.touchevent = _event.touchevent;
-      _t.clickevent = _event.clickevent;
+      if("touchevent" in _event)_t.touchevent = _event.touchevent;
+      if("clickevent" in _event)_t.clickevent = _event.clickevent;
     }
     if (_position == "centerX" || _x == "center") {
       _t.textAlign = "center";
@@ -221,8 +221,8 @@ class Scene{
     if (_isBasicObjects == false) targetArr = this.objects;
     let _sp = new Sprite(_img,_x,_y,_w,_h);
     if (_event != null) {
-      _sp.touchevent = _event.touchevent;
-      _sp.clickevent = _event.clickevent;
+      if("touchevent" in _event)_sp.touchevent = _event.touchevent;
+      if("clickevent" in _event)_sp.clickevent = _event.clickevent;
     }
     if(_position == "centerX" || _x == "center"){
       if(_w == 0){
@@ -263,8 +263,8 @@ class Scene{
   if (_isBasicObjects == false) targetArr = this.objects;
   let _anime = new Anime(_img, _x, _y, _w, _h,_widthAtOneFrame,_frameInterval);
   if (_event != null) {
-    _anime.touchevent = _event.touchevent;
-    _anime.clickevent = _event.clickevent;
+    if("touchevent" in _event)_anime.touchevent = _event.touchevent;
+    if("clickevent" in _event)_anime.clickevent = _event.clickevent;
   }
   if (_position == "centerX" || _x == "center") {
     if (_w == 0) {
@@ -282,8 +282,8 @@ class Scene{
     if (_isBasicObjects == false) targetArr = this.objects;
     let _sp = new Cercle(_x, _y, _hankei,_color,_isStroke);
     if (_event != null) {
-      _sp.touchevent = _event.touchevent;
-      _sp.clickevent = _event.clickevent;
+      if("touchevent" in _event)_sp.touchevent = _event.touchevent;
+      if("clickevent" in _event)_sp.clickevent = _event.clickevent;
     }
     if ( _x == "center") {
       _sp.x = canvas.width /2;
